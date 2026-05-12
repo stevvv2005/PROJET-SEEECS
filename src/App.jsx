@@ -10,7 +10,7 @@ import {
   Radio, Crosshair, Activity, Circle
 } from "lucide-react";
 
-// ─── MOCK DATA ────────────────────────────────────────────────────────────────
+// Mock data
 const MOCK_GPS = { lat: 33.5731, lng: -7.5898 };
 
 function useSensors() {
@@ -54,7 +54,7 @@ const sensorColor = (v) =>
 const sensorLabel = (v) =>
   v > 1.5 ? "CLEAR" : v >= 0.5 ? "CAUTION" : "DANGER";
 
-// ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
+// Shared components
 function Card({ children, className = "", glow = false, style = {} }) {
   return (
     <div
@@ -147,7 +147,7 @@ function Sidebar({ page, setPage }) {
       <div className="p-3 border-t border-white/8">
         <div className="hidden lg:flex items-center gap-2 px-2">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-[10px] font-mono text-slate-500">v2.4.1 — ONLINE</span>
+          <span className="text-[10px] font-mono text-slate-500">v2.4.1 - ONLINE</span>
         </div>
       </div>
     </aside>
@@ -206,7 +206,7 @@ function TopBar({ tel, sensors, onStop, emergencyActive, setPage, page }) {
   );
 }
 
-// ─── PAGE: LOGIN ──────────────────────────────────────────────────────────────
+// Page: login
 function LoginPage({ onLogin }) {
   const [pin, setPin] = useState("");
   const [shake, setShake] = useState(false);
@@ -247,12 +247,12 @@ function LoginPage({ onLogin }) {
             ))}
           </motion.div>
           <div className="grid grid-cols-3 gap-2">
-            {[1,2,3,4,5,6,7,8,9,"",0,"⌫"].map((d, i) => (
+            {[1,2,3,4,5,6,7,8,9,"",0,"DEL"].map((d, i) => (
               <button key={i}
-                onClick={() => d === "⌫" ? setPin(p => p.slice(0,-1)) : d !== "" && handlePin(String(d))}
+                onClick={() => d === "DEL" ? setPin(p => p.slice(0,-1)) : d !== "" && handlePin(String(d))}
                 className={`h-12 rounded-xl font-mono font-bold text-lg transition-all
                   ${d === "" ? "" :
-                    d === "⌫" ? "text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 active:scale-95"
+                    d === "DEL" ? "text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 active:scale-95"
                     : "text-white bg-white/8 hover:bg-sky-500/20 hover:text-sky-300 active:scale-95 border border-white/8 hover:border-sky-500/30"
                   }`}
               >
@@ -267,7 +267,7 @@ function LoginPage({ onLogin }) {
   );
 }
 
-// ─── PAGE: DASHBOARD ─────────────────────────────────────────────────────────
+// Page: dashboard
 function DashboardPage({ sensors, tel, setPage }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-4 overflow-auto">
@@ -337,25 +337,25 @@ function DashboardPage({ sensors, tel, setPage }) {
           {sensors.right < 0.5 && (
             <div className="flex items-center gap-3 bg-red-950/40 border border-red-800/50 rounded-xl px-3 py-2 animate-pulse">
               <AlertTriangle size={14} className="text-red-400 shrink-0" />
-              <span className="text-xs font-mono text-red-300">DANGER — Right obstacle: {sensors.right.toFixed(2)}m</span>
+              <span className="text-xs font-mono text-red-300">DANGER - Right obstacle: {sensors.right.toFixed(2)}m</span>
               <span className="ml-auto text-[10px] font-mono text-red-600">NOW</span>
             </div>
           )}
           {sensors.front < 1.5 && (
             <div className="flex items-center gap-3 bg-amber-950/40 border border-amber-800/40 rounded-xl px-3 py-2">
               <AlertTriangle size={14} className="text-amber-400 shrink-0" />
-              <span className="text-xs font-mono text-amber-300">WARNING — Front obstacle: {sensors.front.toFixed(2)}m</span>
+              <span className="text-xs font-mono text-amber-300">WARNING - Front obstacle: {sensors.front.toFixed(2)}m</span>
               <span className="ml-auto text-[10px] font-mono text-amber-700">~2s</span>
             </div>
           )}
           <div className="flex items-center gap-3 bg-sky-950/30 border border-sky-800/30 rounded-xl px-3 py-2">
             <Zap size={14} className="text-sky-400 shrink-0" />
-            <span className="text-xs font-mono text-sky-300">INFO — Auto-park ready. Spot B2-14 available.</span>
+            <span className="text-xs font-mono text-sky-300">INFO - Auto-park ready. Spot B2-14 available.</span>
             <span className="ml-auto text-[10px] font-mono text-sky-700">5m ago</span>
           </div>
           <div className="flex items-center gap-3 bg-green-950/30 border border-green-800/30 rounded-xl px-3 py-2">
             <Battery size={14} className="text-green-400 shrink-0" />
-            <span className="text-xs font-mono text-green-300">INFO — Battery level normal ({Math.round(tel.battery)}%)</span>
+            <span className="text-xs font-mono text-green-300">INFO - Battery level normal ({Math.round(tel.battery)}%)</span>
             <span className="ml-auto text-[10px] font-mono text-green-700">1m ago</span>
           </div>
         </div>
@@ -364,7 +364,7 @@ function DashboardPage({ sensors, tel, setPage }) {
   );
 }
 
-// ─── PAGE: CAMERA ─────────────────────────────────────────────────────────────
+// Page: camera
 function CameraPage({ sensors }) {
   const [latency] = useState(12);
   return (
@@ -452,7 +452,7 @@ function CameraPage({ sensors }) {
   );
 }
 
-// ─── PAGE: MANUAL CONTROL ─────────────────────────────────────────────────────
+// Page: manual control
 function ControlPage({ tel, setTel }) {
   const [active, setActive] = useState(null);
   const [speed, setSpeed] = useState(1.2);
@@ -562,7 +562,7 @@ function ControlPage({ tel, setTel }) {
   );
 }
 
-// ─── PAGE: SENSORS ────────────────────────────────────────────────────────────
+// Page: sensors
 function SensorsPage({ sensors }) {
   const [tick, setTick] = useState(0);
   useEffect(() => { const id = setInterval(() => setTick(t => t + 1), 800); return () => clearInterval(id); }, []);
@@ -640,7 +640,7 @@ function SensorsPage({ sensors }) {
   );
 }
 
-// ─── PAGE: AUTO PARK ──────────────────────────────────────────────────────────
+// Page: auto park
 function AutoParkPage() {
   const [status, setStatus] = useState("READY");
   const [progress, setProgress] = useState(0);
@@ -672,7 +672,7 @@ function AutoParkPage() {
     <div className="flex flex-col md:flex-row gap-4 p-4 overflow-auto">
       {/* Parking map */}
       <Card glow className="flex-1 min-h-64">
-        <p className="text-[10px] font-mono text-slate-400 tracking-widest mb-4">PARKING MAP — LEVEL B2</p>
+        <p className="text-[10px] font-mono text-slate-400 tracking-widest mb-4">PARKING MAP - LEVEL B2</p>
         <div className="grid grid-cols-6 gap-1.5 mb-4">
           {spots.map(({ id, isCurrent, isTarget, occupied }) => (
             <div key={id}
@@ -769,15 +769,15 @@ function AutoParkPage() {
   );
 }
 
-// ─── PAGE: ALERTS ─────────────────────────────────────────────────────────────
+// Page: alerts
 function AlertsPage({ sensors, tel }) {
   const alerts = [
-    sensors.right < 0.5   && { level: "DANGER",  color: "#ef4444", bg: "bg-red-950/40",    border: "border-red-800/50",    icon: AlertTriangle, msg: `Obstacle on right — ${sensors.right.toFixed(2)}m`,   time: "NOW",   icon2: AlertTriangle },
-    sensors.front < 1.5   && { level: "WARNING", color: "#f59e0b", bg: "bg-amber-950/40",  border: "border-amber-800/40",  icon: AlertTriangle, msg: `Front obstacle detected — ${sensors.front.toFixed(2)}m`, time: "~2s", icon2: AlertTriangle },
-    sensors.left < 1.5    && { level: "WARNING", color: "#f59e0b", bg: "bg-amber-950/40",  border: "border-amber-800/40",  icon: AlertTriangle, msg: `Left obstacle detected — ${sensors.left.toFixed(2)}m`,  time: "~5s", icon2: AlertTriangle },
+    sensors.right < 0.5   && { level: "DANGER",  color: "#ef4444", bg: "bg-red-950/40",    border: "border-red-800/50",    icon: AlertTriangle, msg: `Obstacle on right - ${sensors.right.toFixed(2)}m`,   time: "NOW",   icon2: AlertTriangle },
+    sensors.front < 1.5   && { level: "WARNING", color: "#f59e0b", bg: "bg-amber-950/40",  border: "border-amber-800/40",  icon: AlertTriangle, msg: `Front obstacle detected - ${sensors.front.toFixed(2)}m`, time: "~2s", icon2: AlertTriangle },
+    sensors.left < 1.5    && { level: "WARNING", color: "#f59e0b", bg: "bg-amber-950/40",  border: "border-amber-800/40",  icon: AlertTriangle, msg: `Left obstacle detected - ${sensors.left.toFixed(2)}m`,  time: "~5s", icon2: AlertTriangle },
     { level: "INFO",  color: "#38bdf8", bg: "bg-sky-950/30",    border: "border-sky-800/30",    icon: Zap,         msg: "Auto-park ready. Spot B2-14 available.",              time: "5m ago" },
     { level: "INFO",  color: "#22c55e", bg: "bg-green-950/30",  border: "border-green-800/30",  icon: Battery,     msg: `Battery level normal (${Math.round(tel.battery)}%)`,  time: "1m ago" },
-    { level: "INFO",  color: "#a78bfa", bg: "bg-violet-950/30", border: "border-violet-800/30", icon: Wifi,        msg: `Signal strength ${Math.round(tel.signal)}% — stable`, time: "2m ago" },
+    { level: "INFO",  color: "#a78bfa", bg: "bg-violet-950/30", border: "border-violet-800/30", icon: Wifi,        msg: `Signal strength ${Math.round(tel.signal)}% - stable`, time: "2m ago" },
   ].filter(Boolean);
 
   return (
@@ -809,7 +809,7 @@ function AlertsPage({ sensors, tel }) {
   );
 }
 
-// ─── PAGE: SETTINGS ───────────────────────────────────────────────────────────
+// Page: settings
 function SettingsPage() {
   const [vals, setVals] = useState({
     maxSpeed: 1.5, stopDist: 0.4, sensorSens: 75, nightMode: true,
@@ -888,7 +888,7 @@ function SettingsPage() {
   );
 }
 
-// ─── ROOT APP ──────────────────────────────────────────────────────────────────
+// Root app
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [page, setPage] = useState("dashboard");
