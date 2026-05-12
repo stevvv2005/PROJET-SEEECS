@@ -454,10 +454,9 @@ function CameraPage({ sensors }) {
 // ─── PAGE: MANUAL CONTROL ─────────────────────────────────────────────────────
 function ControlPage({ tel, setTel }) {
   const [active, setActive] = useState(null);
-  const [speed, setSpeed] = useState(0.35);
+  const [speed, setSpeed] = useState(1.2);
   const [mode, setMode] = useState("Drive");
   const dirs = { up: "FORWARD", down: "REVERSE", left: "LEFT", right: "RIGHT" };
-  const accDigits = String(Math.round(speed * 100)).padStart(3, "0").split("");
 
   const handleDir = (dir, down) => {
     setActive(down ? dir : null);
@@ -483,158 +482,86 @@ function ControlPage({ tel, setTel }) {
       onPointerDown={() => handleDir(dir, true)}
       onPointerUp={() => handleDir(dir, false)}
       onPointerLeave={() => handleDir(dir, false)}
-      className={`control-pad-btn ${active === dir ? "active" : ""}`}
+      className={`manual-dpad-btn ${active === dir ? "active" : ""}`}
     >
       {children}
     </motion.button>
   );
 
-  const GearButton = ({ label, value }) => (
+  const ModeButton = ({ label, value }) => (
     <button
-      onClick={() => setTel(t => ({ ...t, gear: value }))}
-      className={`px-4 py-2 rounded-lg text-[10px] font-mono font-bold border transition-all
-        ${tel.gear === value
-          ? value === "R"
-            ? "bg-sky-500/20 border-sky-500/50 text-sky-300"
-            : value === "P"
-              ? "bg-slate-500/20 border-slate-500/40 text-slate-200"
-              : "bg-green-500/20 border-green-500/50 text-green-300"
-          : "bg-white/4 border-white/10 text-slate-500 hover:text-slate-200"
-        }`}
+      onClick={() => setMode(value)}
+      className={`manual-mode ${value.toLowerCase()} ${mode === value ? "active" : ""}`}
     >
       {label}
     </button>
   );
 
   return (
-    <div className="flex flex-col gap-4 p-4 overflow-auto">
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.1fr] gap-4">
-        <Card glow className="min-h-[260px] relative overflow-hidden">
-          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.18),transparent_58%)]" />
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-            <div className="flex flex-col items-center justify-center gap-4">
-              <div className="control-rings">
-                <DBtn dir="up"><ChevronUp size={26} /></DBtn>
-                <DBtn dir="left"><ChevronLeft size={26} /></DBtn>
-                <motion.button
-                  whileTap={{ scale: 0.92 }}
-                  onClick={handleStop}
-                  className="control-pad-center"
-                >
-                  <Square size={17} fill="currentColor" />
-                </motion.button>
-                <DBtn dir="right"><ChevronRight size={26} /></DBtn>
-                <DBtn dir="down"><ChevronDown size={26} /></DBtn>
+    <div className="p-4 overflow-auto">
+      <Card glow className="manual-control-page">
+        <p className="manual-page-title">4. MANUAL CONTROL PAGE</p>
+        <div className="manual-control-layout">
+          <div className="manual-steering">
+            <div className="manual-wheel">
+              <div className="manual-wheel-core">
+                <Car size={18} />
               </div>
-              <div className="w-full max-w-xs">
-                <div className="flex justify-between mb-2">
-                  <span className="text-[10px] font-mono text-slate-500">SPEED</span>
-                  <span className="text-xs font-mono text-sky-300">{speed.toFixed(2)} m/s</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="1"
-                  step="0.05"
-                  value={speed}
-                  onChange={e => setSpeed(Number(e.target.value))}
-                  className="w-full accent-sky-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-center gap-4">
-              <div className="steering-wheel">
-                <div className="wheel-inner">
-                  <Car size={20} />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-2 w-full max-w-sm">
-                <GearButton label="DRIVE" value="D" />
-                <GearButton label="REVERSE" value="R" />
-                <GearButton label="PARK" value="P" />
-              </div>
+              <span className="wheel-spoke left" />
+              <span className="wheel-spoke right" />
+              <span className="wheel-spoke bottom" />
             </div>
           </div>
-        </Card>
 
-        <Card glow className="control-premium-panel">
-          <p className="text-sm font-mono text-slate-200 tracking-widest mb-4">CONTROL PANEL</p>
-          <div className="grid grid-cols-1 lg:grid-cols-[160px_1fr_190px] gap-4">
-            <div className="rounded-2xl border border-sky-500/15 bg-black/20 p-4 flex items-center justify-center">
-              <div className="grid grid-cols-3 gap-2">
-                <div />
-                <DBtn dir="up"><ChevronUp size={22} /></DBtn>
-                <div />
-                <DBtn dir="left"><ChevronLeft size={22} /></DBtn>
-                <button onClick={handleStop} className="control-pad-center compact">
-                  <Square size={16} fill="currentColor" />
-                </button>
-                <DBtn dir="right"><ChevronRight size={22} /></DBtn>
-                <div />
-                <DBtn dir="down"><ChevronDown size={22} /></DBtn>
-                <div />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <div className="text-center">
-                <p className="text-[10px] font-mono text-slate-400 tracking-widest mb-3">ACCELERATION</p>
-                <div className="acceleration-box">
-                  {accDigits.map((digit, i) => (
-                    <span key={`${digit}-${i}`}>{digit}</span>
-                  ))}
-                </div>
-                <p className="text-slate-300 font-mono font-bold mt-2">%</p>
-                <p className="text-[10px] font-mono text-sky-400 mt-1">CURRENT ACCELERATION</p>
-                <p className="text-[10px] font-mono text-slate-400 mt-5">MAX: 100%</p>
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-[10px] font-mono text-slate-400">SPEED LIMIT</span>
-                  <span className="text-[10px] font-mono text-slate-300">{speed.toFixed(1)} m/s</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="1"
-                  step="0.05"
-                  value={speed}
-                  onChange={e => setSpeed(Number(e.target.value))}
-                  className="w-full accent-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center gap-4">
-              <div className="speed-gauge" style={{ "--needle": `${-128 + speed * 210}deg` }}>
-                <div className="gauge-needle" />
-                <div className="gauge-center" />
-                <div className="absolute bottom-8 left-0 right-0 text-center">
-                  <p className="text-3xl font-mono font-bold text-white">{speed.toFixed(2)}</p>
-                  <p className="text-xs font-mono text-slate-400">m/s</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-2 w-full">
-                <GearButton label="DRIVE" value="D" />
-                <GearButton label="REVERSE" value="R" />
-                <GearButton label="PARK" value="P" />
+          <div className="manual-speed">
+            <p className="manual-label">MAX SPEED</p>
+            <strong>{speed.toFixed(1)} m/s</strong>
+            <div className="manual-slider-wrap">
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="0.1"
+                value={speed}
+                onChange={e => setSpeed(Number(e.target.value))}
+                className="manual-vertical-slider"
+                aria-label="Max speed"
+              />
+              <div className="manual-scale">
+                <span>2.0</span>
+                <span>1.5</span>
+                <span>1.0</span>
+                <span>0.5</span>
+                <span>0.0</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-            <button className="premium-action blue"><ParkingSquare size={16} /> AUTO PARK</button>
-            <button onClick={() => setMode("Precision")} className={`premium-action purple ${mode === "Precision" ? "active" : ""}`}><Crosshair size={16} /> PRECISION MODE</button>
-            <button onClick={handleStop} className="premium-action red"><XCircle size={16} /> EMERGENCY BRAKE</button>
-          </div>
-          {active && (
-            <div className="mt-3 text-[10px] font-mono text-sky-300 bg-sky-500/10 border border-sky-500/30 px-4 py-2 rounded-lg inline-flex">
-              {dirs[active]} ACTIVE
+          <div className="manual-controls">
+            <div className="manual-dpad">
+              <div />
+              <DBtn dir="up"><ChevronUp size={25} fill="currentColor" /></DBtn>
+              <div />
+              <DBtn dir="left"><ChevronLeft size={25} fill="currentColor" /></DBtn>
+              <div className="manual-dpad-core" />
+              <DBtn dir="right"><ChevronRight size={25} fill="currentColor" /></DBtn>
+              <div />
+              <DBtn dir="down"><ChevronDown size={25} fill="currentColor" /></DBtn>
+              <div />
             </div>
-          )}
-        </Card>
-      </div>
+            <motion.button whileTap={{ scale: 0.95 }} onClick={handleStop} className="manual-stop">
+              STOP
+            </motion.button>
+          </div>
+        </div>
+
+        <div className="manual-bottom">
+          <ModeButton label="DRIVE" value="Drive" />
+          <ModeButton label="CREEP" value="Creep" />
+          <ModeButton label="PRECISION" value="Precision" />
+        </div>
+        {active && <div className="manual-active">{dirs[active]} ACTIVE</div>}
+      </Card>
     </div>
   );
 }
@@ -643,70 +570,66 @@ function ControlPage({ tel, setTel }) {
 function SensorsPage({ sensors }) {
   const [tick, setTick] = useState(0);
   useEffect(() => { const id = setInterval(() => setTick(t => t + 1), 800); return () => clearInterval(id); }, []);
-  const wave = (tick % 3);
   const zone = (value) => value > 1.5 ? "safe" : value >= 0.5 ? "caution" : "danger";
   const zoneText = (value) => value > 1.5 ? "SAFE" : value >= 0.5 ? "CAUTION" : "DANGER";
+  const sensorTiles = [
+    { key: "front", label: "FRONT" },
+    { key: "rear", label: "REAR" },
+    { key: "left", label: "LEFT" },
+    { key: "right", label: "RIGHT" },
+  ];
 
   return (
     <div className="flex flex-col gap-4 p-4 overflow-auto">
-      <Card glow className="sensor-map-card">
-        <p className="absolute top-4 left-4 text-[10px] font-mono text-slate-300 tracking-widest">SENSORS</p>
-        <div className="sensor-radar">
-          {[90, 130, 170, 210].map((r, i) => (
-            <div key={r} className="sensor-ring"
-              style={{ width: r * 2, height: r * 2, opacity: wave === i % 3 ? 0.42 : 0.13 }} />
-          ))}
-          <div className="sensor-scan" />
-          <div className={`sonar-arc arc-front ${zone(sensors.front)}`} />
-          <div className={`sonar-arc arc-right ${zone(sensors.right)}`} />
-          <div className={`sonar-arc arc-rear ${zone(sensors.rear)}`} />
-          <div className={`sonar-arc arc-left ${zone(sensors.left)}`} />
-          <div className="realistic-car-top">
-            <div className="car-glass front" />
-            <div className="car-glass rear" />
-            <div className="car-light l1" />
-            <div className="car-light l2" />
-          </div>
-          {[
-            { key: "front", label: "FRONT", pos: "front-label" },
-            { key: "rear", label: "REAR", pos: "rear-label" },
-            { key: "left", label: "LEFT", pos: "left-label" },
-            { key: "right", label: "RIGHT", pos: "right-label" },
-          ].map(({ key, label, pos }) => (
-            <div key={key} className={`sensor-map-label ${pos}`} style={{ color: sensorColor(sensors[key]) }}>
-              <span>{label}</span>
-              <strong>{sensors[key].toFixed(1)}m</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="sensor-legend">
-          {[
-            { tone: "safe", label: "SAFE", sub: "> 1.5m", icon: Shield },
-            { tone: "caution", label: "CAUTION", sub: "0.5m - 1.5m", icon: AlertTriangle },
-            { tone: "danger", label: "DANGER", sub: "< 0.5m", icon: XCircle },
-          ].map(({ tone, label, sub, icon: Icon }) => (
-            <div key={tone} className={`legend-card ${tone}`}>
-              <Icon size={15} />
-              <div>
-                <strong>{label}</strong>
-                <span>{sub}</span>
+      <Card glow className="sensor-analytics-page">
+        <p className="sensor-analytics-title">5. SENSOR ANALYTICS PAGE</p>
+        <div className="sensor-analytics-stage">
+          <div className="sensor-tile-grid left">
+            {sensorTiles.filter(item => item.key === "front" || item.key === "left").map(({ key, label }) => (
+              <div key={key} className={`sensor-analytics-tile ${zone(sensors[key])}`}>
+                <span>{label}</span>
+                <strong>{sensors[key].toFixed(1)}m</strong>
+                <Radio size={18} />
               </div>
+            ))}
+          </div>
+
+          <div className="sensor-car-zone">
+            <div className="sonar-wave-stack front">
+              <span /><span /><span />
             </div>
-          ))}
+            <div className="sonar-wave-stack left">
+              <span /><span /><span />
+            </div>
+            <div className="sonar-wave-stack right">
+              <span /><span /><span />
+            </div>
+            <div className="sonar-bottom-arc" />
+            <div className="realistic-car-top analytics">
+              <div className="car-glass front" />
+              <div className="car-glass rear" />
+              <div className="car-light l1" />
+              <div className="car-light l2" />
+            </div>
+          </div>
+
+          <div className="sensor-tile-grid right">
+            {sensorTiles.filter(item => item.key === "rear" || item.key === "right").map(({ key, label }) => (
+              <div key={key} className={`sensor-analytics-tile ${zone(sensors[key])}`}>
+                <span>{label}</span>
+                <strong>{sensors[key].toFixed(1)}m</strong>
+                <Radio size={18} />
+              </div>
+            ))}
+          </div>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-        {[
-          { key: "front", label: "FRONT SENSOR" },
-          { key: "rear",  label: "REAR SENSOR"  },
-          { key: "left",  label: "LEFT SENSOR"  },
-          { key: "right", label: "RIGHT SENSOR" },
-        ].map(({ key, label }) => (
+        {sensorTiles.map(({ key, label }) => (
           <Card key={key} className={`sensor-status-card ${zone(sensors[key])}`}>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-slate-400 tracking-widest">{label}</span>
+              <span className="text-[10px] font-mono text-slate-400 tracking-widest">{label} SENSOR</span>
               <Radio size={15} />
             </div>
             <div className="text-3xl font-mono font-bold mt-3">{sensors[key].toFixed(1)}<span className="text-base text-slate-500">m</span></div>
