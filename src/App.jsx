@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import steeringWheel from "./assets/steering-wheel.png";
 import {
   Car, Camera, Sliders, Cpu, ParkingSquare, Bell, Settings,
   Wifi, Battery, AlertTriangle, ChevronUp, ChevronDown, ChevronLeft,
@@ -504,12 +505,7 @@ function ControlPage({ tel, setTel }) {
         <div className="manual-control-layout">
           <div className="manual-steering">
             <div className="manual-wheel">
-              <div className="manual-wheel-core">
-                <Car size={18} />
-              </div>
-              <span className="wheel-spoke left" />
-              <span className="wheel-spoke right" />
-              <span className="wheel-spoke bottom" />
+              <img src={steeringWheel} alt="Electric vehicle steering wheel" />
             </div>
           </div>
 

@@ -51,70 +51,21 @@ body {
 .manual-wheel {
   width: clamp(190px, 28vw, 270px);
   aspect-ratio: 1;
-  border-radius: 50%;
   position: relative;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(circle, #111b2a 0 26%, transparent 27%),
-    radial-gradient(circle, transparent 0 58%, #050b14 59% 66%, #1f2937 67% 73%, #07111f 74%),
-    conic-gradient(from 220deg, #07111f, #26364d, #08111e, #17263a, #050b14);
-  border: 2px solid rgba(148, 163, 184, .22);
-  box-shadow: inset 0 0 22px rgba(255,255,255,.08), inset 0 -16px 30px rgba(0,0,0,.52), 0 0 36px rgba(59,130,246,.12);
-}
-
-.manual-wheel::before {
-  content: "";
-  position: absolute;
-  inset: 15%;
   border-radius: 50%;
-  border: 12px solid rgba(15, 23, 42, .82);
-  box-shadow: inset 0 0 16px rgba(148,163,184,.12), 0 0 10px rgba(0,0,0,.6);
+  background: radial-gradient(circle, rgba(59,130,246,.12), transparent 62%);
+  filter: drop-shadow(0 26px 28px rgba(0, 0, 0, .42)) drop-shadow(0 0 24px rgba(59, 130, 246, .2));
 }
 
-.manual-wheel-core {
-  width: 62px;
-  height: 62px;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: #dbeafe;
-  background: linear-gradient(180deg, #253449, #111827);
-  border: 2px solid rgba(148, 163, 184, .28);
-  box-shadow: 0 0 18px rgba(0,0,0,.42);
-}
-
-.wheel-spoke {
-  position: absolute;
-  z-index: 2;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(71,85,105,.28), rgba(148,163,184,.46), rgba(71,85,105,.22));
-}
-
-.wheel-spoke.left {
-  width: 74px;
-  height: 18px;
-  left: 48px;
-  top: 52%;
-  transform: rotate(16deg);
-}
-
-.wheel-spoke.right {
-  width: 74px;
-  height: 18px;
-  right: 48px;
-  top: 52%;
-  transform: rotate(-16deg);
-}
-
-.wheel-spoke.bottom {
-  width: 26px;
-  height: 82px;
-  left: 50%;
-  bottom: 42px;
-  transform: translateX(-50%);
-  border-radius: 12px 12px 26px 26px;
+.manual-wheel img {
+  width: 112%;
+  height: 112%;
+  object-fit: contain;
+  transform: translateY(2px);
+  user-select: none;
+  pointer-events: none;
 }
 
 .manual-speed {
